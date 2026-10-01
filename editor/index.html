@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Editor — Porta 10A · by ForumSCP</title>
+  <link rel="stylesheet" href="editor.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <div class="eyebrow">PORTA 10A · by ForumSCP</div>
+      <h1>Editor da base de restaurantes</h1>
+      <p>Editor local. Nada é enviado para a internet.</p>
+    </div>
+    <div class="top-actions">
+      <label class="button secondary">Carregar JSON<input id="fileInput" type="file" accept="application/json,.json" hidden></label>
+      <button id="downloadBtn" class="button primary" disabled>Exportar JSON</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <div class="stats">
+        <div><strong id="count">0</strong><span>restaurantes</span></div>
+        <div><strong id="openCount">0</strong><span>abertos</span></div>
+        <div><strong id="appleIdCount">0</strong><span>com Apple ID</span></div>
+        <div><strong id="appleConfirmedCount">0</strong><span>Apple confirmados</span></div>
+        <div><strong id="missingCount">0</strong><span>com dados em falta</span></div>
+      </div>
+
+      <div class="toolbar">
+        <input id="search" type="search" placeholder="Pesquisar nome, localidade, zona…" autocomplete="off">
+        <select id="stateFilter">
+          <option value="">Todos os estados</option>
+          <option value="aberto">Abertos</option>
+          <option value="incerto">Incerto</option>
+          <option value="encerrado">Encerrados</option>
+        </select>
+        <select id="typeFilter"><option value="">Todos os tipos</option></select>
+      </div>
+
+      <button id="newBtn" class="new-button" disabled>＋ Novo restaurante</button>
+      <div id="list" class="restaurant-list">
+        <div class="empty">Carrega primeiro o ficheiro <code>data/restaurantes.json</code>.</div>
+      </div>
+    </aside>
+
+    <section class="editor-panel">
+      <div id="welcome" class="welcome">
+        <div class="welcome-icon">✦</div>
+        <h2>Pronto para editar</h2>
+        <p>Carrega <code>data/restaurantes.json</code>. As alterações ficam apenas no navegador até exportares o novo ficheiro.</p>
+        <label class="button primary">Carregar restaurantes.json<input id="fileInput2" type="file" accept="application/json,.json" hidden></label>
+      </div>
+
+      <form id="form" class="form" hidden>
+        <div class="form-header">
+          <div>
+            <div class="eyebrow" id="modeLabel">RESTAURANTE</div>
+            <h2 id="formTitle">Editar restaurante</h2>
+          </div>
+          <div class="header-actions">
+            <button type="button" id="duplicateBtn" class="button secondary">Duplicar</button>
+            <button type="button" id="deleteBtn" class="button danger">Eliminar</button>
+          </div>
+        </div>
+
+        <div id="notice" class="notice" hidden></div>
+
+        <div class="grid two">
+          <label>Nome<input name="nome" required></label>
+          <label>ID<input name="id" required></label>
+        </div>
+
+        <div class="grid three">
+          <label>Tipo<select name="tipo" id="tipo"></select></label>
+          <label>Estado<select name="estado"><option value="aberto">Aberto</option><option value="incerto">Incerto</option><option value="encerrado">Encerrado</option></select></label>
+          <label>Especialidade<input name="especialidade" placeholder="Ex.: peixe, marisco, cozinha portuguesa"></label>
+        </div>
+
+        <fieldset>
+          <legend>Atributos para pesquisa e “Decide por mim”</legend>
+          <p class="field-help">Seleciona apenas características confirmadas. As etiquetas atuais foram pré-preenchidas de forma conservadora a partir dos dados existentes.</p>
+          <div class="tag-section"><strong>Cozinhas / oferta</strong><div id="tags-cozinhas" class="tag-grid"></div></div>
+          <div class="tag-section"><strong>Ambiente</strong><div id="tags-ambientes" class="tag-grid"></div></div>
+          <div class="tag-section"><strong>Ocasiões</strong><div id="tags-ocasioes" class="tag-grid"></div></div>
+          <div class="tag-section"><strong>Características</strong><div id="tags-caracteristicas" class="tag-grid"></div></div>
+          <div class="grid two">
+            <label>Faixa de preço<select name="preco"><option value="">Não indicada</option><option value="€">€</option><option value="€€">€€</option><option value="€€€">€€€</option><option value="€€€€">€€€€</option></select></label>
+            <label>Acessibilidade<select name="acessibilidade"><option value="">Desconhecida</option><option value="sim">Sim</option><option value="parcial">Parcial</option><option value="não">Não</option></select></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Localização</legend>
+          <div class="grid three">
+            <label>Província<input name="provincia"></label>
+            <label>Zona<input name="zona"></label>
+            <label>Localidade<input name="localidade"></label>
+          </div>
+          <label>Morada<input name="morada"></label>
+          <div class="grid two">
+            <label>Latitude<input name="lat" inputmode="decimal" placeholder="38.7223"></label>
+            <label>Longitude<input name="lon" inputmode="decimal" placeholder="-9.1393"></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Contactos e fontes</legend>
+          <div class="grid two">
+            <label>Telefone<input name="telefone" type="tel"></label>
+            <label>Website<input name="website" type="url" placeholder="https://…"></label>
+          </div>
+          <div class="grid two">
+            <label>Fonte<input name="fonte" placeholder="Site oficial, visita, etc."></label>
+            <label>Apple Place ID<input name="applePlaceId" autocomplete="off"></label>
+          </div>
+          <div class="grid two">
+            <label>Nome Apple<input name="appleName"></label>
+            <label>Pesquisa Maps<input name="mapsQuery"></label>
+          </div>
+          <div class="apple-check">
+            <div><strong>Apple Maps</strong><p class="field-help">O ID presente é usado diretamente para abrir o estabelecimento. Só marca a confirmação depois de verificares que a ficha corresponde ao restaurante.</p></div>
+            <div class="apple-actions"><button type="button" id="openAppleBtn" class="button secondary">Abrir no Apple Maps</button></div>
+            <label class="check"><input type="checkbox" name="appleConfirmado"> Confirmei que esta ficha Apple corresponde ao restaurante</label>
+            <label>Confirmado em<input name="appleVerificadoEm" type="date"></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Notas e atualização</legend>
+          <label>Notas<textarea name="notas" rows="4"></textarea></label>
+          <div class="grid two">
+            <label>Atualizado em<input name="actualizado" type="date"></label>
+            <label class="check"><input id="touchDate" type="checkbox" checked> Atualizar a data quando guardar</label>
+          </div>
+        </fieldset>
+
+        <div class="form-footer">
+          <span id="validation" class="validation"></span>
+          <button type="button" id="cancelBtn" class="button secondary">Cancelar</button>
+          <button type="submit" class="button primary">Guardar alterações</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="editor.js"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "name": "guia-porta-10a",
+  "private": true,
+  "scripts": {
+    "validate": "node scripts/validate-data.js",
+    "editor": "python3 -m http.server 8080"
+  }
+}

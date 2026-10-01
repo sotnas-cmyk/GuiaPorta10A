@@ -1,0 +1,53 @@
+{
+  "cozinhas": [
+    "portuguesa",
+    "regional",
+    "peixe",
+    "marisco",
+    "carne",
+    "grelhados",
+    "petiscos",
+    "cerveja"
+  ],
+  "ambientes": [
+    "clássico",
+    "casual",
+    "contemporâneo",
+    "romântico",
+    "familiar",
+    "grupo",
+    "tranquilo",
+    "animado"
+  ],
+  "ocasioes": [
+    "almoço",
+    "jantar",
+    "date",
+    "família",
+    "grupo",
+    "negócios",
+    "celebração"
+  ],
+  "caracteristicas": [
+    "esplanada",
+    "vista",
+    "histórico",
+    "hotel",
+    "cerveja",
+    "vinho",
+    "take-away",
+    "acessível"
+  ],
+  "preco": [
+    "€",
+    "€€",
+    "€€€",
+    "€€€€"
+  ],
+  "acessibilidade": [
+    "sim",
+    "parcial",
+    "não",
+    "desconhecida"
+  ]
+}
